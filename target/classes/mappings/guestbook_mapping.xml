@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="GuestBookDao">
+
+	<resultMap type="guestbook" id="guestbookResult">
+		<id property="no" column="no"/>
+		<result property="name" column="name"/>
+		<result property="content" column="content"/>
+		<result property="password" column="password"/>
+		<result property="regdate" column="regdate"/>
+	</resultMap>
+
+ 
+	<insert id="insert">
+		insert into guestbook values (#{no}, #{name}, #{content}, #{password}, sysdate)
+	</insert>
+
+	<delete id="delete">
+		DELETE GUESTBOOK WHERE no = #{no}
+	</delete>
+	
+<!--<select id="getList" resultType="guestbook">
+		SELECT no, name, content, password, to_char(reg_date, 'yyyy-mm-dd hh:mi:ss' ) regdate from guestbook  
+		order by regdate desc
+	</select>
+	 -->
+	<select id="getList" resultMap="guestbookResult">
+		SELECT no, name, content, password, to_char(reg_date, 'yyyy-mm-dd hh:mi:ss' ) regdate 
+		from guestbook order by regdate desc
+	</select>
+	 
+	<select id="getKeywordList" resultType="guestbook">
+		SELECT no, name, content, password, to_char(reg_date, 'yyyy-mm-dd hh:mi:ss' ) regdate 
+		from guestbook where content like #{keyword} order by regdate desc
+	</select>
+	
+	<update id="update">
+		UPDATE GUESTBOOK SET CONTENT = #{content} WHERE NO = #{no}
+	</update>
+	
+	<select id="getBookOneList" resultType="guestbook">
+		SELECT no, name, content, password, to_char(reg_date, 'yyyy-mm-dd hh:mi:ss' ) regdate 
+		from guestbook WHERE no = #{no} 
+	</select>
+	
+</mapper>
